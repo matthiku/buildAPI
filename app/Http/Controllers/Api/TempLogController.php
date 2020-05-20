@@ -32,7 +32,7 @@ class TempLogController extends Controller
     // use OAuth in all methods 'latest'
     public function __construct()
     {
-        $this->middleware( 'oauth', ['only' => ['store'] ] );
+        $this->middleware( 'auth:api', ['only' => ['store'] ] );
     }
 
 

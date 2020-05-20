@@ -34,7 +34,7 @@ class SettingController extends Controller
     // use OAuth in ALL methods!
     public function __construct()
     {
-        $this->middleware( 'api' );
+        $this->middleware( 'auth:api' );
     }
 
 

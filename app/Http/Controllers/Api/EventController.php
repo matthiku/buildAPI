@@ -34,7 +34,7 @@ class EventController extends Controller
     // use OAuth in all methods but index and show!
     public function __construct()
     {
-        $this->middleware( 'oauth', ['except' => ['index', 'show', 'byStatus'] ] );
+        $this->middleware( 'auth:api', ['except' => ['index', 'show', 'byStatus'] ] );
     }
 
 
