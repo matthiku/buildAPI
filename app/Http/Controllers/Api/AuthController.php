@@ -50,9 +50,14 @@ class AuthController extends Controller
 
         // get the user object and return it together with a new access token
         $user = auth()->user();
-        $accessToken = $user->createToken('authToken')->accessToken;
+        $userToken = $user->createToken('authToken');
+        $expires_in = strtotime($userToken->token->expires_at);
 
-        return response(['user'=>$user, 'access_token'=>$accessToken]);
+        return response([
+            'user'          => $user,
+            'access_token'  => $userToken->accessToken,
+            'expires_in'    => $expires_in
+        ]);
 
     }
 
