@@ -5,18 +5,15 @@ from collections import OrderedDict
 
 
 # url list
-lclWUrl = "http://localhost/dev/buildingAPI/public/"                     # test
 lclUrl = "http://buildapi.me/api/"                     # test
-rmtUrl = "http://buildingapi.eec.ie/"     # prod
+rmtUrl = "http://buildingapi.eec.ie/api/"     # prod
 
 # output file for extensive (non-JSON) html replies
 tmpfile = '/laragon/www/pyout.html'
 
 # random secret in the API db
-lcl_client_secret = "SULrmfBV"
-lcl_client_secret = "WQN1VgH5Oy2VTjCNwH3HCTQpNc3wqJtPqMKSmFas"
-rmt_client_secret = "RYGnyjKPs"
-client_secret = lcl_client_secret
+lcl_email = "testuser@example.com"
+lcl_password = "test0123"
 
 headers = {'Accept' : ''}
 headers['Accept'] = 'application/json'
@@ -72,18 +69,17 @@ def nonJson(text):
 def getEnviron():
     print('-'*50)
     print("L:",lclUrl)
-    print("W:",lclWUrl)
     print("R:",rmtUrl)
     while True:
         where = input("Local or remote? (L/r) ").upper()
         if where in ("W", "L","R", ""): break
     url = lclUrl
+
     if where == "R": 
         url = rmtUrl
-        tokenRequest['client_secret'] = rmt_client_secret
-    if where == "W": 
-        url = lclWUrl
-        tokenRequest['client_secret'] = rmt_client_secret
+        tokenRequest['email'] = input("user email addr? ")
+        tokenRequest['password'] = input("user password? ")
+
     print('Using:', url, "\n")
     return url
 
@@ -108,10 +104,10 @@ def inputCmd():
     print('-'*60)
     return cmd
 
-    
+
 ''' request a new access token '''
 def getToken():
-    r = requests.post(url+'login', data={'email':'matthiku@yahoo.com', 'password':'test0123'}, headers=headers)
+    r = requests.post(url+'login', data={'email':tokenRequest['email'] , 'password':tokenRequest['password']}, headers=headers)
     rc = r.status_code
     if rc == 200:
         return r.json()['access_token'], r.json()['expires_in']
@@ -160,7 +156,8 @@ newEvent = {
 tokenRequest = {
     'grant_type'    : 'client_credentials',
     'client_id'     : 'collector',
-    'client_secret' : client_secret,
+    'email'         : lcl_email,
+    'password'      : lcl_password
 }
 newPowerLog = {
     'power'       : random.randint(300,399),
