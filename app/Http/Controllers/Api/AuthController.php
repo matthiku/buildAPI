@@ -45,7 +45,7 @@ class AuthController extends Controller
 
         // we attempt to log in this user with the validated credentials
         if (!auth()->attempt($validatedData)) {
-            return response(['message'=>__('failed')], 402);
+            return response(['message'=>__('auth.failed')], 402);
         }
 
         // get the user object and return it together with a new access token
